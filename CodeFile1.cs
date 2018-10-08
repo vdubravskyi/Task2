@@ -26,15 +26,21 @@ class MyClass
         }
         Console.WriteLine();
 
-        Console.Write("A number of lucky tickets(first algorithm): ");
-        Console.WriteLine(Variant1(N));
+        Console.WriteLine(DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss:ms"));
+        Console.WriteLine(Variant3(N));
+        Console.WriteLine(DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss:ms"));
 
-        Console.Write("A number of lucky tickets(first algorithm): ");
-        Console.WriteLine(Variant2(N));
+        /* Console.Write("A number of lucky tickets(first algorithm): ");
+         Console.WriteLine(Variant1(N));
 
-        Console.WriteLine();
+         Console.Write("A number of lucky tickets(first algorithm): ");
+         Console.WriteLine(Variant2(N));
+
+         Console.WriteLine();*/
+
 
     }
+
     //Метод, який реалізовує перший алгоритм
     static int Variant1(int N)
     {
@@ -59,6 +65,7 @@ class MyClass
         }
         return count;
     }
+
     //Метод, який реалізовує другий алгоритм
     static int Variant2(int N)
     {
@@ -85,6 +92,32 @@ class MyClass
 
         return count;
     }
+
+    //Метод, який реалізовує третій алгоритм
+    static long Variant3(int N)
+    {
+        int n = (int)Math.Pow(10, N);
+        int start = (int)Math.Pow(10, N - 1);
+
+        int[] amounts = new int[n];
+        string str = "";
+        long count = 0;
+
+        for (int i = 0; i < n; i++)
+        {
+            str += i;
+            for (int j = 0; j < str.Length; j++)
+                amounts[i] += str[j] - 48;
+            str = "";
+        }
+
+        for (int i = start; i < n; i++)
+            for (int j = 0; j < n; j++)
+                if (amounts[i] == amounts[j])
+                    count++;
+        return count;
+    }
+
     //Метод, який визначає найменший і найбільший номер квитка, залежно від к-сті цифр в його номері 
     static long NumberOfOperations(int N, out long max)
     {
