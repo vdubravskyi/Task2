@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 
+/*Написати програму для визначення кількості 2N-значних “щасливих” квитків, в яких сума
+перших N цифр дорівнює сумі других N цифр.N - довільне натуральне число.*/
+
 class MyClass
 {
+
     static void Main()
     {
         int N;
 
         Console.Write("Enter N: ");
+        //Введення
         try
         {
             N = int.Parse(Console.ReadLine());
@@ -30,7 +35,7 @@ class MyClass
         Console.WriteLine();
 
     }
-
+    //Метод, який реалізовує перший алгоритм
     static int Variant1(int N)
     {
         string str = "";
@@ -45,16 +50,16 @@ class MyClass
             for (int j = 0; j < n; j++)
             {
                 if (j < N)
-                    firstPart += str[j] - 48;
+                    firstPart += str[j] - 48;//Сумування першої частини (str[j] повертає код цифри у таблиці ASCII(код 0 - 48)
                 else
-                    secondPart += str[j] - 48;
+                    secondPart += str[j] - 48;//Сумування другої частини
             }
             if (firstPart == secondPart)
                 count++;
         }
         return count;
     }
-
+    //Метод, який реалізовує другий алгоритм
     static int Variant2(int N)
     {
         long min, max;
@@ -69,10 +74,10 @@ class MyClass
             for (int j = 0; j < n; j++)
             {
                 if (j < N)
-                    firstPart += h % 10;
+                    firstPart += h % 10;//Сумування першої частини
                 else
-                    secondPart += h % 10;
-                h = h / 10;
+                    secondPart += h % 10;//Сумування другої частини
+                h = h / 10;//перехід на попередню цифру номера
             }
             if (firstPart == secondPart)
                 count++;
@@ -80,7 +85,7 @@ class MyClass
 
         return count;
     }
-
+    //Метод, який визначає найменший і найбільший номер квитка, залежно від к-сті цифр в його номері 
     static long NumberOfOperations(int N, out long max)
     {
         long min = 10;
