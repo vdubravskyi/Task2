@@ -26,17 +26,16 @@ class MyClass
         }
         Console.WriteLine();
 
-        Console.WriteLine(DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss:ms"));
-        Console.WriteLine(Variant3(N));
-        Console.WriteLine(DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss:ms"));
-
-        /* Console.Write("A number of lucky tickets(first algorithm): ");
+        /* Console.Write("A number of lucky tickets(the first algorithm): ");
          Console.WriteLine(Variant1(N));
 
-         Console.Write("A number of lucky tickets(first algorithm): ");
-         Console.WriteLine(Variant2(N));
+         Console.Write("A number of lucky tickets(the second algorithm): ");
+         Console.WriteLine(Variant2(N));*/
 
-         Console.WriteLine();*/
+        Console.Write("A number of lucky tickets(the third algorithm): ");
+        Console.WriteLine(Variant3(N));
+
+        Console.WriteLine();
 
 
     }
@@ -93,13 +92,14 @@ class MyClass
         return count;
     }
 
-    //Метод, який реалізовує третій алгоритм
+    //Метод, який реалізовує третій алгоритм (найшвидший)
     static long Variant3(int N)
     {
-        int n = (int)Math.Pow(10, N);
-        int start = (int)Math.Pow(10, N - 1);
+        int n = (int)Math.Pow(10, N);//Змінна, яка містить в собі кількість можливих цифр в половині номера квитка
+        int start = (int)Math.Pow(10, N - 1);//Ця змінна містить мінімальне число, з якого починаються номера першої половини квитків
+//Приклад: якщо N = 3, то n = 1000(0-999), start = 100. Отже перший номер для N=3 - 100 000
 
-        int[] amounts = new int[n];
+        int[] amounts = new int[n];//У цьому масиві я зберігаю всі суми цифр чисел від 0 до n - 1
         string str = "";
         long count = 0;
 
@@ -107,7 +107,7 @@ class MyClass
         {
             str += i;
             for (int j = 0; j < str.Length; j++)
-                amounts[i] += str[j] - 48;
+                amounts[i] += str[j] - 48; //Для збільшення швидкодії звертаюсь на пряму до кодів символів
             str = "";
         }
 
