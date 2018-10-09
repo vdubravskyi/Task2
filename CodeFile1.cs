@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 /*Написати програму для визначення кількості 2N-значних “щасливих” квитків, в яких сума
 перших N цифр дорівнює сумі других N цифр.N - довільне натуральне число.*/
+delegate int Func(int i);
 
 class MyClass
 {
@@ -26,26 +27,27 @@ class MyClass
         }
         Console.WriteLine();
 
-        /* Console.Write("A number of lucky tickets(the first algorithm): ");
+        /* Console.Write("Number of hapy tickets(the first algorithm): ");
          Console.WriteLine(Variant1(N));
 
-         Console.Write("A number of lucky tickets(the second algorithm): ");
+         Console.Write("Number of hapy tickets(the second algorithm): ");
          Console.WriteLine(Variant2(N));*/
 
-        Console.Write("A number of lucky tickets(the third algorithm): ");
-        Console.WriteLine(Variant3(N));
+        //Console.Write("Number of happy tickets(the third algorithm): ");
+        //Console.WriteLine(Variant3(N));
+        Console.Write("Number of happy tickets(the fourth algorithm): ");
+        Console.WriteLine(Variant4(N));
 
         Console.WriteLine();
-
 
     }
 
     //Метод, який реалізовує перший алгоритм
-    static int Variant1(int N)
+    static long Variant1(int N)
     {
         string str = "";
         long min, max;
-        int firstPart = 0, secondPart = 0, count = 0, n = N * 2;
+        long firstPart = 0, secondPart = 0, count = 0, n = N * 2;
 
         min = NumberOfOperations(N, out max);
 
@@ -91,32 +93,58 @@ class MyClass
 
         return count;
     }
-
-    //Метод, який реалізовує третій алгоритм (найшвидший)
-    static long Variant3(int N)
+    //Метод, який реалізовує третій алгоритм
+    public static long Variant3(int N)
     {
-        int n = (int)Math.Pow(10, N);//Змінна, яка містить в собі кількість можливих цифр в половині номера квитка
-        int start = (int)Math.Pow(10, N - 1);//Ця змінна містить мінімальне число, з якого починаються номера першої половини квитків
-//Приклад: якщо N = 3, то n = 1000(0-999), start = 100. Отже перший номер для N=3 - 100 000
-
-        int[] amounts = new int[n];//У цьому масиві я зберігаю всі суми цифр чисел від 0 до n - 1
-        string str = "";
         long count = 0;
+        int n = (int)Math.Pow(10, N);//Змінна, яка містить в собі кількість можливих цифр в половині номера квитка
+        string str = "";
+        string[] g = new string[N];
+        long[] amounts = new long[n];//У цьому масиві я зберігаю всі суми цифр чисел від 0 до n - 1
 
         for (int i = 0; i < n; i++)
         {
             str += i;
-            for (int j = 0; j < str.Length; j++)
-                amounts[i] += str[j] - 48; //Для збільшення швидкодії звертаюсь на пряму до кодів символів
+            for (short j = 0; j < str.Length; j++)
+                amounts[i] += str[j] - 48; //Звертаюсь на пряму до кодів символів
             str = "";
         }
 
-        for (int i = start; i < n; i++)
+        for (int i = 0; i < n; i++)
             for (int j = 0; j < n; j++)
                 if (amounts[i] == amounts[j])
                     count++;
         return count;
     }
+   //Метод, який реалізовує четвертий алгоритм (найшвидший)
+   static long Variant4(int N)
+    {
+        int[] counts = new int[N * 9 + 1];
+        long n =(long) Math.Pow(10, N);
+        long count = 0;
+
+        Func sum = x =>
+        {
+            int amount = 0;
+            while (x != 0)
+            {
+                amount += x % 10;
+                x = x / 10;
+            }
+            return amount;
+        };
+
+        for (int i = 0; i <= N * 9; i++)
+            counts[i] = 0;
+
+        for (int i = 0; i < n; i++)
+            counts[sum(i)]++;
+
+        for (int i = 0; i <= N * 9; i++)
+            count += (counts[i] * counts[i]);
+        return count;
+    }
+
 
     //Метод, який визначає найменший і найбільший номер квитка, залежно від к-сті цифр в його номері 
     static long NumberOfOperations(int N, out long max)
